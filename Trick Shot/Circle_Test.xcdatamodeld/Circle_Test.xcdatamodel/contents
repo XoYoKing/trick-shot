@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="BounceLevelController" syncable="YES">
+        <attribute name="ballAngle" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="ballLocation" optional="YES" attributeType="Integer 16" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="ballRadius" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="customPaths" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="holeLocation" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="levelName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="levelNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="obstacles" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="powerups" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="starQuantity" optional="YES" attributeType="Binary" syncable="YES"/>
+    </entity>
+    <entity name="ProgressData" syncable="YES">
+        <attribute name="levelNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="stars" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="BounceLevelController" positionX="-63" positionY="-18" width="128" height="195"/>
+        <element name="ProgressData" positionX="-63" positionY="45" width="128" height="75"/>
+    </elements>
+</model>

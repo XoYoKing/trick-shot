@@ -964,7 +964,7 @@
         [controller addPowerup:[IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.75, 0.75)]];
         AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate storeShiftPoint:CGPointMake(0.75, 0.6) forIntegerKey:controller.levelNumber ball:YES];
-        controller.starQuantitys = IEStarQuantityCreate(8, 7, 6);
+        controller.starQuantitys = IEStarQuantityCreate(10, 9, 8);
     }
     else if (controller.levelNumber == 52){
         controller.levelName = @"Deadly Unlock";
@@ -1369,6 +1369,190 @@
     }
     else if (controller.levelNumber == 73){
         controller.levelName = @"Rocket Pocket";
+        controller.ballLocation = IEObjectLayoutBottomLeft;
+        controller.holeLayout = IEObjectLayoutBottomRight;
+        [controller addPaths:@[[IECustomPath pathWithPointsFromString:@"(0,0),(1,0),(1,0.1),(0,0.1)" texture:IETextureTypeNoClick], [IECustomPath pathWithPointsFromString:@"(0,1),(1,1),(1,0.9),(0,0.9)" texture:IETextureTypeNoClick], [IECustomPath pathWithPointsFromString:@"(0,0.9),(0,0.1),(0.15,0.1),(0.15,0.9)" texture:IETextureTypeNoClick], [IECustomPath pathWithPointsFromString:@"(1,0.9),(1,0.1),(0.85,0.1),(0.85,0.9)" texture:IETextureTypeNoClick]]];
+        [controller addPowerup:[IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.5, 0.05)]];
+        for (int k = 0;k<2;k++){
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupGravity shiftPoint:CGPointMake(0.5, 0.95)];
+            if (k == 0){
+                powerup.shiftPoint = CGPointMake(0.45, 0.05);
+                powerup.zRotation = M_PI;
+            }
+            [controller addPowerup:powerup];
+        }
+        for (int k = 0;k<5;k++){
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupKey shiftPoint:CGPointZero];
+            if (k == 0)
+                powerup.shiftPoint = CGPointMake(0.25, 0.35);
+            else if (k == 1)
+                powerup.shiftPoint = CGPointMake(0.5, 0.45);
+            else if (k == 2)
+                powerup.shiftPoint = CGPointMake(0.25, 0.75);
+            else if (k == 3)
+                powerup.shiftPoint = CGPointMake(0.55, 0.75);
+            else
+                powerup.shiftPoint = CGPointMake(0.35, 0.85);
+            [controller addPowerup:powerup];
+        }
+    }
+    else if (controller.levelNumber == 74){
+        controller.levelName = @"Trapped";
+        controller.ballLocation = IEObjectLayoutTopLeft;
+        controller.holeLayout = IEObjectLayoutMiddle;
+        [controller addPaths:@[[IECustomPath pathWithPointsFromString:@"(0,0.8),(0,0.6),(0.4,0.6)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(1,0.8),(1,0.6),(0.6,0.6)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0.5,0),(1,0),(1,0.25),(0.85,0.25)" texture:IETextureTypeSolid]]];
+        for (int k = 0;k<5;k++){
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupKey shiftPoint:CGPointZero];
+            if (k == 0)
+                powerup.shiftPoint = CGPointMake(0.5, 0.9);
+            else if (k == 1)
+                powerup.shiftPoint = CGPointMake(0.4, 0.7);
+            else if (k == 2)
+                powerup.shiftPoint = CGPointMake(0.6, 0.7);
+            else
+                powerup.shiftPoint = CGPointMake(0.6, 0.125);
+            [controller addPowerup:powerup];
+        }
+        [controller addPowerups:@[[IEPowerup powerupWithType:IEPowerupGravity shiftPoint:CGPointMake(0.5, 0.95)], [IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.5, 0.05)], [IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.9, 0.3)]]];
+    }
+    else if (controller.levelNumber == 75){
+        controller.levelName = @"Turkey Shoot";
+        controller.ballLocation = IEObjectLayoutBottomLeft;
+        controller.holeLayout = IEObjectLayoutTopLeft;
+        controller.ballAngle = M_PI;
+        [controller addPaths:@[[IECustomPath pathWithPointsFromString:@"(0.95,1),(1,1),(1,0),(0.95,0)" texture:IETextureTypeInstaDeath], [IECustomPath pathWithPointsFromString:@"(0.7,0.4),(0.7,0.6),(0,0.6),(0,0.4)" texture:IETextureTypeInstaDeath], [IECustomPath pathWithPointsFromString:@"(0,0),(1,0),(1,0.05),(0,0.05)" texture:IETextureTypeNoClick]]];
+        IEPowerup *gravity = [IEPowerup powerupWithType:IEPowerupGravity shiftPoint:CGPointMake(0.1, 0.05)];
+        gravity.zRotation = -M_PI_2;
+        IEPowerup *aimAndFire = [IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.05, 0.05)];
+        [controller addPowerups:@[gravity, aimAndFire]];
+    }
+    else if (controller.levelNumber == 76){
+        controller.levelName = @"Baby Steps";
+        controller.holeLayout = IEObjectLayoutBottomRight;
+        controller.ballLocation = IEObjectLayoutTopRightMiddle;
+        [controller addPaths:@[[IECustomPath pathWithPointsFromString:@"(0,0),(0,0.5),(0.1,0.5),(0.1,0)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0.2,0),(0.2,0.4),(0.3,0.4),(0.3,0)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0.4,0),(0.4,0.3),(0.5,0.3),(0.5,0)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0.6,0),(0.6,0.2),(0.7,0.2),(0,0.2)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0.8,0),(0.8,0.1),(0.9,0.1),(0.9,0)" texture:IETextureTypeSolid]]];
+        [controller addPaths:@[[IECustomPath pathWithPointsFromString:@"(0.1,0),(0.1,0.4),(0.2,0.4),(0.2,0)" texture:IETextureTypeInstaDeath], [IECustomPath pathWithPointsFromString:@"(0.3,0),(0.3,0.3),(0.4,0.3),(0.4,0)" texture:IETextureTypeInstaDeath], [IECustomPath pathWithPointsFromString:@"(0.5,0),(0.5,0.2),(0.6,0.2),(0.6,0)" texture:IETextureTypeInstaDeath], [IECustomPath pathWithPointsFromString:@"(0.7,0),(0.7,0.1),(0.8,0.1),(0.8,0)" texture:IETextureTypeInstaDeath]]];
+        [controller addPath:[IECustomPath pathWithPointsFromString:@"(0,0.75),(0.9,0.1),(0.9,0.2),(0,0.85)" texture:IETextureTypeNoClick]];
+        [controller addPowerup:[IEPowerup powerupWithType:IEPowerupGravity shiftPoint:CGPointMake(0.5,0.95)]];
+        for (int k = 0;k<4;k++){
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupKey shiftPoint:CGPointZero];
+            if (k == 0)
+                powerup.shiftPoint = CGPointMake(0.15, 0.5);
+            else if (k == 1)
+                powerup.shiftPoint = CGPointMake(0.35, 0.4);
+            else if (k == 2)
+                powerup.shiftPoint = CGPointMake(0.55, 0.3);
+            else
+                powerup.shiftPoint = CGPointMake(0.75, 0.2);
+            [controller addPowerup:powerup];
+        }
+    }
+    else if (controller.levelNumber == 77){
+        controller.levelName = @"Sine Wave";
+        controller.ballLocation = IEObjectLayoutDiagonalTopRight;
+        controller.holeLayout = IEObjectLayoutRight;
+        controller.ballAngle = M_PI;
+        for (int k = 0;k<3;k++)
+            [controller addPowerup:[IEPowerup powerupWithType:IEPowerupKey shiftPoint:CGPointMake(0.35+k*0.15, 0.5)]];
+        for (int k = 0;k<4;k++){
+            CGFloat x = 0.23+(0.1275+0.015)*k;
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupGravity shiftPoint:CGPointZero];
+            if (k == 0)
+                powerup.shiftPoint = CGPointMake(x, 0.1);
+            else if (k == 1 || k == 3)
+                powerup.shiftPoint = CGPointMake(x, 0.8);
+            else
+                powerup.shiftPoint = CGPointMake(x, 0.2);
+            [controller addPowerup:powerup];
+        }
+        const CGFloat thickness = 0.03;
+        const CGFloat padding = 0.1275;
+        const CGFloat total = thickness + padding;
+        for (int k = 0;k<4;k++){
+            CGFloat left = 0.2+total*k;
+            NSString *pointString = [NSString stringWithFormat:@"(%f,0.3),(%f,0.7),(%f,0.7),(%f,0.3)", left, left,  left+thickness, left+thickness];
+            IECustomPath *path = [IECustomPath pathWithPointsFromString:pointString texture:IETextureTypeSolid];
+            [controller addPath:path];
+        }
+    }
+    else if (controller.levelNumber == 78){
+        controller.levelName = @"Deadly Borders";
+        controller.ballLocation = IEObjectLayoutCustom;
+        controller.holeLayout = IEObjectLayoutDiagonalTopRight;
+        AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        [delegate storeShiftPoint:CGPointMake(0.25, 0.15) forIntegerKey:controller.levelNumber ball:YES];
+        
+        [controller addPaths:@[[IECustomPath pathWithPointsFromString:@"(0,0.55),(0,1),(0.47,1),(0.06,0.9)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(1,0.55),(1,1),(0.53,1),(0.94,0.9)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(1,0.45),(0,1),(0.53,0),(0.94,0.1)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0.47,0.5),(0.5,0.6),(0.53,0.5),(0.5,0.4)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0,0.45),(0,0),(0.47,0),(0.06,0.1)" texture:IETextureTypeSolid]]];
+        for (int k = 0;k<4;k++){
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupGravity shiftPoint:CGPointZero];
+            if (k == 0){
+                powerup.shiftPoint = CGPointMake(0.25,0.75);
+                powerup.zRotation = M_PI;
+            }
+            else if (k == 1){
+                powerup.shiftPoint = CGPointMake(0.75, 0.5);
+                powerup.zRotation = M_PI_2;
+            }
+            else if (k == 2)
+                powerup.shiftPoint = CGPointMake(0.5,0.25);
+            else{
+                powerup.shiftPoint = CGPointMake(0.25, 0.5);
+                powerup.zRotation = -M_PI_2;
+            }
+            [controller addPowerup:powerup];
+        }
+        for (int k = 0;k<2;k++){
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupKey shiftPoint:CGPointZero];
+            if (k == 0)
+                powerup.shiftPoint = CGPointMake(0.25, 0.25);
+            else
+                powerup.shiftPoint = CGPointMake(0.75, 0.25);
+            [controller addPowerup:powerup];
+        }
+        [controller addPowerup:[IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.25, 0.75)]];
+    }
+    else if (controller.levelNumber == 79){
+        controller.levelName = @"Death Row";
+        controller.ballLocation = IEObjectLayoutCustom;
+        controller.holeLayout = IEObjectLayoutCustom;
+        AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        [delegate storeShiftPoint:CGPointMake(0.35, 0.1) forIntegerKey:controller.levelNumber ball:YES];
+        [delegate storeShiftPoint:CGPointMake(0.65, 0.1) forIntegerKey:controller.levelNumber ball:NO];
+        [controller addPairs:@[[IECustomPath pathWithPointsFromString:@"(0.48,0),(0.48,0.8),(0.52,0.8),(0.52,0)" texture:IETextureTypeInstaDeath], [IECustomPath pathWithPointsFromString:@"(0,0),(0,1),(0.2,1),(0.2,0)" texture:IETextureTypeInstaDeath], [IECustomPath pathWithPointsFromString:@"(1,1),(1,0),(0.78,0),(0.78,1)" texture:IETextureTypeInstaDeath]]];
+        for (int k = 0;k<8;k++){
+            CGFloat x;
+            CGFloat y;
+            CGFloat rotation;
+            if (k%2 == 0)
+                rotation = 0;
+            else
+                rotation = M_PI;
+            if(k<4)
+                y = 0.2+0.2*k;
+            else
+                y = 0.7-0.2*(k-4);
+            if(k<4&&k%2==0)
+                x = 0.27;
+            else if (k<4&&k%2==1)
+                x = 0.41;
+            else if (k>4&&k%2==0)
+                x = 0.73;
+            else
+                x = 0.60;
+            IEPowerup *powerup = [IEPowerup powerupWithType:IEPowerupGravity shiftPoint:CGPointMake(x, y)];
+            powerup.zRotation = rotation;
+            [controller addPowerup:powerup];
+        }
+    }
+    else if (controller.levelNumber == 80){
+        controller.levelName = @"Shape Shifter";
+        controller.ballLocation = IEObjectLayoutDiagonalTopLeft;
+        controller.holeLayout = IEObjectLayoutBottomRight;
+        controller.ballAngle = M_PI_2;
+        [controller addPaths:@[[IECustomPath pathWithPointsFromString:@"(0,0.5),(0,0.55),(1,0.55),(1,0.5)" texture:IETextureTypeSolid], [IECustomPath pathWithPointsFromString:@"(0,0.3),(0,0.35),(1,0.35),(1,0.3)" texture:IETextureTypeInstaDeath]]];
+        [controller addPowerups:@[[IEPowerup powerupWithType:IEPowerupGhost shiftPoint:CGPointMake(0.5, 0.75)], [IEPowerup powerupWithType:IEPowerupImmune shiftPoint:CGPointMake(0.25, 0.425)]]];
+    }
+    else if (controller.levelNumber == 81){
         
     }
     else if (controller.levelNumber == 200){

@@ -355,7 +355,7 @@ static const uint32_t invincibleCategory =  0x1 << 7;
             }
             else if (type == IEPowerupGhost){
                 self.circle.alpha = 0.5;
-                self.circle.physicsBody.collisionBitMask = 0x0;
+                self.circle.physicsBody.collisionBitMask = edgeCategory;
             }
             else if (type == IEPowerupGravity){
                 self.physicsBody.friction = 0.2;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2EE46717-ADED-4AB1-A699-FE02D6D672C7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Trick Shot</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>80D3848E8356AD5D06D4ED1EE40A565E908966FA</key>
+		<string>https://github.com/edufresne/trick-shot</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Trick Shot.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>80D3848E8356AD5D06D4ED1EE40A565E908966FA</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/edufresne/trick-shot</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>80D3848E8356AD5D06D4ED1EE40A565E908966FA</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>80D3848E8356AD5D06D4ED1EE40A565E908966FA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>trick-shot</string>
+		</dict>
+	</array>
+</dict>
+</plist>

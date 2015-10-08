@@ -1555,6 +1555,17 @@
     else if (controller.levelNumber == 81){
         
     }
+    else if (controller.levelNumber == 199){
+        controller.levelName = @"Physics Test";
+        controller.holeLayout = IEObjectLayoutCustom;
+        AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        [delegate storeShiftPoint:CGPointMake(2, 2) forIntegerKey:controller.levelNumber ball:NO];
+        controller.starQuantitys = IEStarQuantityCreate(100, 100, 100);
+        [controller addPowerup:[IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.25, 0.5)]];
+        [controller addPowerup:[IEPowerup powerupWithType:IEPowerupGhost shiftPoint:CGPointMake(0.5, 0.5)]];
+        [controller addPowerup:[IEPowerup powerupWithType:IEPowerupAimAndFire shiftPoint:CGPointMake(0.75, 0.5)]];
+        [controller addPairs:@[[IEObjectPointPair pairWithShift:CGPointMake(0.5, 0.1) shapeName:IEShapeNameCircle textureName:IETextureTypeInstaDeath], [IEObjectPointPair pairWithShift:CGPointMake(0.5, 0.9) shapeName:IEShapeNameCircle textureName:IETextureTypeNoClick], [IEObjectPointPair pairWithShift:CGPointMake(0.9, 0.5) shapeName:IEShapeNameCircle textureName:IETextureTypeSolid]]];
+    }
     else if (controller.levelNumber == 200){
         controller.levelName = @"Tight Fit pt 2";
         controller.ballLocation = IEObjectLayoutBottom;

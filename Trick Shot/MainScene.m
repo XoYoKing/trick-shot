@@ -56,9 +56,11 @@
 static const uint32_t edgeCategory =        0x1 << 0;
 static const uint32_t ballCategory =        0x1 << 1;
 static const uint32_t holeCategory =        0x1 << 2;
-static const uint32_t noCollisionCategory = 0x1 << 3;
-static const uint32_t obstacleCategory =    0x1 << 4;
+
+static const uint32_t noClickCategory =     0x1 << 3;
+static const uint32_t solidCategory =       0x1 << 4;
 static const uint32_t instaDeathCategory =  0x1 << 5;
+
 static const uint32_t powerupCategory =     0x1 << 6;
 static const uint32_t invincibleCategory =  0x1 << 7;
 
@@ -88,6 +90,7 @@ static const uint32_t invincibleCategory =  0x1 << 7;
     self.currentHits = 0;
     self.physicsBody = [SKPhysicsBody bodyWithEdgeLoopFromRect:self.frame];
     self.physicsBody.categoryBitMask = edgeCategory;
+    self.physicsBody.collisionBitMask = ballCategory;
     self.physicsWorld.contactDelegate = self;
     self.physicsWorld.gravity = CGVectorZero();
     //Background appearance
@@ -176,8 +179,8 @@ static const uint32_t invincibleCategory =  0x1 << 7;
     circle.physicsBody.dynamic = YES;
     circle.physicsBody.allowsRotation = YES;
     circle.physicsBody.categoryBitMask = ballCategory;
-    circle.physicsBody.collisionBitMask = 0x0;
-    circle.physicsBody.contactTestBitMask = edgeCategory | holeCategory | obstacleCategory;
+    circle.physicsBody.collisionBitMask = edgeCategory | solidCategory;
+    circle.physicsBody.contactTestBitMask = edgeCategory | holeCategory | solidCategory;
     circle.physicsBody.mass = MASS_CONSTANT;
     circle.name = @"circle";
     [self addChild:circle];
@@ -284,7 +287,7 @@ static const uint32_t invincibleCategory =  0x1 << 7;
         SKSpriteNode *key = [SKSpriteNode spriteNodeWithTexture:[self.view textureFromNode:shape]];
         key.position = CGPointZero;
         key.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:key.size.width/2];
-        key.physicsBody.categoryBitMask = obstacleCategory;
+        key.physicsBody.categoryBitMask = solidCategory;
         key.physicsBody.collisionBitMask = ballCategory;
         key.physicsBody.contactTestBitMask = 0x0;
         [key runAction: [SKAction scaleBy:0.25 duration:0]];
@@ -295,7 +298,66 @@ static const uint32_t invincibleCategory =  0x1 << 7;
 /*Event listeners for in game events. These are for all touches, touch pull offs, and touch movement as well as contact between objects in game */
 #pragma mark - Event Listeners
 /*Registers collisions between object and does various code depending on what category bit mask the two bodies have. If the ball is in a moving state this method detects its collisions with all walls and edges to decrease the hit amount as well as the hole. Also if the player is making edges it detects if an edge intersects an obstacle and the edge is deleted */
+-(void)printDebug:(SKPhysicsContact*)contact{
+    NSString *string;
+    switch (contact.bodyA.categoryBitMask) {
+        case edgeCategory:
+            string = @"EdgeCategory";
+            break;
+        case solidCategory:
+            string = @"SoldCategory";
+            break;
+        case ballCategory:
+            string  = @"BallCategory";
+            break;
+        case holeCategory:
+            string = @"HoleCategory";
+            break;
+        case instaDeathCategory:
+            string = @"InstaDeathCategory";
+            break;
+        case powerupCategory:
+            string = @"PowerupCategory";
+            break;
+        case invincibleCategory:
+            string = @"InvincibleCategory";
+            break;
+        default:
+            string = @"";
+            break;
+    }
+    NSString *string2;
+    switch (contact.bodyB.categoryBitMask){
+        case edgeCategory:
+            string2 = @"EdgeCategory";
+            break;
+        case solidCategory:
+            string2 = @"SoldCategory";
+            break;
+        case ballCategory:
+            string2  = @"BallCategory";
+            break;
+        case holeCategory:
+            string2 = @"HoleCategory";
+            break;
+        case instaDeathCategory:
+            string2 = @"InstaDeathCategory";
+            break;
+        case powerupCategory:
+            string2 = @"PowerupCategory";
+            break;
+        case invincibleCategory:
+            string2 = @"InvincibleCategory";
+            break;
+        default:
+            string2 = @"";
+            break;
+    }
+    string = [NSString stringWithFormat:@"%@ w %@", string, string2];
+    NSLog(@"%@", string);
+}
 -(void)didBeginContact:(SKPhysicsContact *)contact{
+    [self printDebug: contact];
     if (self.gameState == GameStateBallMoving){
         if (contact.bodyA.categoryBitMask == instaDeathCategory || contact.bodyB.categoryBitMask == instaDeathCategory){
             if ([contact.bodyA.node isEqualToNode:self.circle]||[contact.bodyB.node isEqualToNode:self.circle]){
@@ -355,7 +417,8 @@ static const uint32_t invincibleCategory =  0x1 << 7;
             }
             else if (type == IEPowerupGhost){
                 self.circle.alpha = 0.5;
-                self.circle.physicsBody.collisionBitMask = edgeCategory;
+                self.circle.physicsBody.collisionBitMask = edgeCategory | noClickCategory;
+                self.circle.physicsBody.contactTestBitMask = noClickCategory | edgeCategory;
             }
             else if (type == IEPowerupGravity){
                 self.physicsBody.friction = 0.2;
@@ -421,7 +484,15 @@ static const uint32_t invincibleCategory =  0x1 << 7;
             }
             [powerup runAction:[SKAction sequence:@[[SKAction group:@[[SKAction fadeAlphaTo:0 duration:1], [SKAction scaleTo:1.4 duration:1]]], [SKAction removeFromParent]]]];
         }
-        else if (contact.bodyB.categoryBitMask == edgeCategory || contact.bodyA.categoryBitMask == edgeCategory||contact.bodyA.categoryBitMask == obstacleCategory || contact.bodyB.categoryBitMask == obstacleCategory){
+        else if (contact.bodyA.categoryBitMask == holeCategory || contact.bodyB.categoryBitMask == holeCategory){
+            // This is when the hole and the ball collide. The game is won and the black ball is scaled down and removed while the sphere is scaled up. this ending state is also handled by the same method
+            self.gameState = GameStateWon;
+            self.circle.physicsBody.contactTestBitMask = 0x0;
+            [self.circle runAction:[SKAction sequence:@[[SKAction scaleTo:1 duration:0.214], [SKAction scaleBy:1.4 duration:0.0857]]]];
+            [self.hole runAction:[SKAction sequence:@[[SKAction scaleTo:0 duration:0.3], [SKAction removeFromParent]]]];
+            [self handleEndingState];
+        }
+        else{
             //Bounces off any non hole object. Changes label
             
             if (noGravity){
@@ -441,19 +512,11 @@ static const uint32_t invincibleCategory =  0x1 << 7;
             // Decreases the size of the sphere every hit //
             [self.circle runAction:[SKAction scaleTo:1-((float)self.currentHits/((float)self.controller.starQuantitys.min+1)) duration:0.25]];
         }
-        else{
-            // This is when the hole and the ball collide. The game is won and the black ball is scaled down and removed while the sphere is scaled up. this ending state is also handled by the same method
-            self.gameState = GameStateWon;
-            self.circle.physicsBody.contactTestBitMask = 0x0;
-            [self.circle runAction:[SKAction sequence:@[[SKAction scaleTo:1 duration:0.214], [SKAction scaleBy:1.4 duration:0.0857]]]];
-            [self.hole runAction:[SKAction sequence:@[[SKAction scaleTo:0 duration:0.3], [SKAction removeFromParent]]]];
-            [self handleEndingState];
-        }
         
     }
     else if (self.gameState == GameStatePlacingItems){
         //Intersection between an obstacle and a created edge has occured and is deleted after the edge turns red and fades away. The created connection is removed from the manager
-        if (contact.bodyA.categoryBitMask == edgeCategory || contact.bodyA.categoryBitMask == noCollisionCategory){
+        if (contact.bodyA.categoryBitMask == edgeCategory || contact.bodyA.categoryBitMask == noClickCategory){
             SKNode *node;
             if (contact.bodyA.categoryBitMask == edgeCategory)
                 node = contact.bodyA.node;
@@ -546,7 +609,7 @@ static const uint32_t invincibleCategory =  0x1 << 7;
             for (SKNode *node in self.hole.children){
                 node.physicsBody.dynamic = NO;
             }
-            circle.physicsBody.collisionBitMask = edgeCategory | obstacleCategory;
+            circle.physicsBody.collisionBitMask = edgeCategory | solidCategory;
             [circle.physicsBody applyImpulse:createAngledVector(12,self.controller.ballAngle)];
             SKNode *label = [self childNodeWithName:@"titleLabel"];
             [label removeFromParent];
@@ -827,8 +890,8 @@ static const uint32_t invincibleCategory =  0x1 << 7;
     dot1.position = pair.first;
     dot1.physicsBody = [SKPhysicsBody bodyWithEdgeFromPoint:CGPointZero toPoint:CGPointMake(pair.second.x-pair.first.x, pair.second.y-pair.first.y)];
     dot1.physicsBody.categoryBitMask = edgeCategory;
-    dot1.physicsBody.collisionBitMask = ballCategory;
-    dot1.physicsBody.contactTestBitMask = ballCategory | edgeCategory | obstacleCategory | noCollisionCategory;
+    dot1.physicsBody.collisionBitMask = 0x0;
+    dot1.physicsBody.contactTestBitMask = ballCategory | edgeCategory | solidCategory | noClickCategory;
     dot1.physicsBody.friction = 0;
     dot1.physicsBody.restitution = 1;
     [self addChild:dot1];
@@ -1142,9 +1205,9 @@ static const uint32_t invincibleCategory =  0x1 << 7;
     sprite.physicsBody.affectedByGravity = NO;
     sprite.physicsBody.fieldBitMask = 0x0;
     if ([pair.textureName isEqualToString:IETextureTypeSolid]){
-        sprite.physicsBody.categoryBitMask = edgeCategory;
-        sprite.physicsBody.collisionBitMask = ballCategory;
-        sprite.physicsBody.contactTestBitMask = 0x0;
+        sprite.physicsBody.categoryBitMask = solidCategory;
+        sprite.physicsBody.collisionBitMask = 0x0;
+        sprite.physicsBody.contactTestBitMask = edgeCategory;
         sprite.name = @"Solid";
         sprite.physicsBody.friction = 0;
         sprite.physicsBody.restitution = 1;
@@ -1152,7 +1215,7 @@ static const uint32_t invincibleCategory =  0x1 << 7;
     else if ([pair.textureName isEqualToString:IETextureTypeNoClick]){
         sprite.alpha = 0.75;
         sprite.zPosition--;
-        sprite.physicsBody.categoryBitMask = noCollisionCategory;
+        sprite.physicsBody.categoryBitMask = noClickCategory;
         sprite.physicsBody.collisionBitMask = 0x0;
         sprite.physicsBody.contactTestBitMask = edgeCategory;
         sprite.name = @"NoClick";
@@ -1168,16 +1231,16 @@ static const uint32_t invincibleCategory =  0x1 << 7;
         sprite.name = @"InstaDeath";
     }
     else if ([pair.textureName isEqualToString:IETextureTypeFriction]){
-        sprite.physicsBody.categoryBitMask = obstacleCategory;
-        sprite.physicsBody.collisionBitMask = ballCategory;
+        sprite.physicsBody.categoryBitMask = solidCategory;
+        sprite.physicsBody.collisionBitMask = 0x0;
         sprite.physicsBody.contactTestBitMask = ballCategory | edgeCategory;
         sprite.physicsBody.friction = 0.4;
         sprite.physicsBody.restitution = 0.3;
         sprite.name = @"Friction";
     }
     else if ([pair.textureName isEqualToString:IETextureTypeCharged]){
-        sprite.physicsBody.categoryBitMask = obstacleCategory;
-        sprite.physicsBody.collisionBitMask = ballCategory;
+        sprite.physicsBody.categoryBitMask = solidCategory;
+        sprite.physicsBody.collisionBitMask = 0x0;
         sprite.physicsBody.contactTestBitMask = ballCategory | edgeCategory;
         sprite.name = @"Charge";
     }
@@ -1212,14 +1275,14 @@ static const uint32_t invincibleCategory =  0x1 << 7;
     physicsNode.position = CGPointMake(texture.size.width/2, texture.size.height/2);
     [sprite addChild:physicsNode];
     if ([path.textureName isEqualToString:IETextureTypeSolid]){
-        physicsNode.physicsBody.categoryBitMask = obstacleCategory;
-        physicsNode.physicsBody.collisionBitMask = ballCategory;
+        physicsNode.physicsBody.categoryBitMask = solidCategory;
+        physicsNode.physicsBody.collisionBitMask = 0x0;
         physicsNode.physicsBody.contactTestBitMask = edgeCategory | ballCategory;
         physicsNode.physicsBody.resting = 1;
         physicsNode.physicsBody.friction = 0;
     }
     else if ([path.textureName isEqualToString:IETextureTypeNoClick]){
-        physicsNode.physicsBody.categoryBitMask = noCollisionCategory;
+        physicsNode.physicsBody.categoryBitMask = noClickCategory;
         physicsNode.physicsBody.collisionBitMask = 0x0;
         physicsNode.physicsBody.contactTestBitMask = edgeCategory;
 

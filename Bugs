@@ -1,0 +1,37 @@
+Bugs:
+1. 
+- Menu Button interfering with button press on levels where ball's layout is IEObjectLayaoutTopLeft
+- Solution: Remove button and call menu by double tap gesture recognizer/touch counter
+
+To Do:
+1.
+- Write levels 80 - 85
+	- These levels will use ghost and immunity powerups
+
+2.
+- Create portal functionality
+	- Add functionality to IEBounceLevelController
+	- Add to MainScene implementation
+	- Create remaining levels 85 - 100 using all used powerups as well as portals.
+
+3.
+- Add Snap feature to line drawing. Feature includes:
+	- Snapping to straight angles (0, 90, 180, 270 degree angles)
+	- Snapping to angles previously drawn in the current game. (Ex. player draws 32 degree angle, future lines will snap to 32 degrees/ 32+180 degrees)
+	- Snapping to already drawn points if the distance is short.
+
+4.
+- Add leaderboard to app.
+	- Create authentication from App Delegate
+	- Give functionality to menu. If the user is not authenticated the game center view controller will be saved and used if the leaderboard button is pressed
+	- Add leaderboard to app profile with desired settings. Leaderboard will track number of stars
+
+5.
+- Add ad functionality as interstitials.
+
+6.
+- Add following in app purchases.
+	- Remove ads. Accessible from menu.
+	- Skip level. Accessible if stuck on a level. Counts of levels will be counted.
+
+
